@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Living Manifest Pre-Commit Hook
+# 检查是否有未审核的提案阻止提交
+
+PENDING=$(find docs/proposals -name "*.md" -exec grep -l "\[PENDING REVIEW\]" {} \; 2>/dev/null)
+
+if [ -n "$PENDING" ]; then
+    echo "⚠️  发现未审核的 Living Manifest 提案："
+    echo "$PENDING"
+    echo ""
+    echo "请审核后再提交，或使用 --no-verify 跳过（不推荐）"
+    exit 1
+fi
+
+echo "✅ Living Manifest 检查通过"
+exit 0
